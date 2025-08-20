@@ -6,6 +6,7 @@ let plyerOscore = Number(localStorage.getItem("playerOScore")) || 0;
 let cells = document.getElementsByClassName("cell");
 let mzssage = document.getElementById("message");
 let turn = document.getElementById("turn");
+let foundw = false;
 
 function updatescore() {
     document.getElementById("scoreX").innerText = plyerXscore;
@@ -15,7 +16,7 @@ updatescore();
 
 for (let i = 0; i < cells.length; i++) {
     cells[i].onclick = function() {
-        if (zone[i] === "") {
+        if (zone[i] === "" && foundw === false) {
             zone[i] = currentplayer;
             cells[i].innerText = currentplayer;
             checkWinner();
@@ -31,6 +32,9 @@ function switchPlayer() {
 }
 
 function checkWinner() {
+    if (foundw === true) {
+    return;
+}
     let winner = [
         [0,1,2],[3,4,5],[6,7,8],
         [0,3,6],[1,4,7],[2,5,8],
@@ -47,6 +51,7 @@ function checkWinner() {
             localStorage.setItem("playerXScore", plyerXscore);
             localStorage.setItem("playerOScore", plyerOscore);
             updatescore();
+             foundw = true;
             return;
         }
     }
@@ -80,10 +85,12 @@ function reset() {
     currentplayer = "X";
     turn.innerText = "Turn: " + currentplayer;
     mzssage.innerText = "";
+      foundw = false; 
 }
 
 document.getElementById("reset").onclick = reset;
 document.getElementById("resetScore").onclick = function() {
+      foundw = false; 
     plyerXscore = 0;
     plyerOscore = 0;
     localStorage.setItem("playerXScore", 0);
